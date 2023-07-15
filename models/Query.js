@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const DoubtSchema = new mongoose.Schema(
+const QuerySchema = new mongoose.Schema(
     {
         topic: String,
         question: String,
@@ -10,6 +10,6 @@ const DoubtSchema = new mongoose.Schema(
     }
 );
 
-const Doubt = mongoose.model("Doubt", DoubtSchema);
+const Query = mongoose.model("Doubt", QuerySchema);
 
-module.exports = Doubt;
+module.exports = Query;
