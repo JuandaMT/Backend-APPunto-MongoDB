@@ -10,6 +10,6 @@ const QuerySchema = new mongoose.Schema(
     }
 );
 
-const Query = mongoose.model("Doubt", QuerySchema);
+const Query = mongoose.model("Query", QuerySchema);
 
 module.exports = Query;
