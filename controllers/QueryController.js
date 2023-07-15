@@ -1,5 +1,5 @@
 const Query = require("../models/Query");
-const User = require("../models/Usuario");
+// const User = require("../models/Usuario");
 // const Answer = require("../models/Answer");
 
 const QueryController = {
@@ -11,7 +11,7 @@ const QueryController = {
 
             const { topic, question } = req.body;
 
-            // Verificar que los campos estén presentes
+            // verifico que no falte rellenar ningún campo
             if (!topic || !question) {
                 return res.status(400).send({ message: "Tenés que completar todos los campos" });
             }
@@ -45,7 +45,6 @@ const QueryController = {
     },
 
     async updateQueryById(req, res) {
-        //por _id
         try {
             if (!req.user) {
                 // return res.status(401).send({ message: "No estás autenticado" });
@@ -86,7 +85,7 @@ const QueryController = {
         }
     },
 
-    async getAllQueries(req, res) {
+    async getAllQueriesPagination(req, res) {
         try {
             if (!req.user) {
                 // return res.status(401).send({ message: "No estás autenticado" });
@@ -126,6 +125,75 @@ const QueryController = {
         } catch (error) {
             console.error(error);
             res.status(500).send({ message: "Ha habido un problema al obtener las consultas" });
+        }
+    },
+
+    async markQueryAsResolved(req, res) {
+        try {
+            if (!req.user) {
+                // return res.status(401).send({ message: "No estás autenticado" });
+            }
+
+            const { queryId } = req.params;
+            const { resolved } = req.body; //debe ser 0 ó 1
+
+            // verifico que se añadió el campo resolved en el body
+            if (resolved === undefined) {
+                return res.status(400).send({ message: "Falta proporcionar el campo 'resolved'" });
+            }
+
+            const query = await Query.findByIdAndUpdate(queryId, { resolved }, { new: true });
+
+            if (!query) {
+                return res.status(404).send({ message: "La consulta no existe" });
+            }
+
+            res.status(200).send({ message: "Estado de la consulta actualizado exitosamente", query });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ message: "Ha habido un problema al actualizar el estado de la consulta" });
+        }
+    },
+
+    async markQueryAsUnresolved(req, res) {
+        try {
+            if (!req.user) {
+                // return res.status(401).send({ message: "No estás autenticado" });
+            }
+
+            const { queryId } = req.params;
+
+            const query = await Query.findByIdAndUpdate(queryId, { resolved: false }, { new: true });
+
+            if (!query) {
+                return res.status(404).send({ message: "La consulta no existe" });
+            }
+
+            res.status(200).send({ message: "OK! La consulta fue marcada como no resuelta", query });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ message: "Ha habido un problema al actualizar el estado de la consulta" });
+        }
+    },
+
+    async deleteQuery(req, res) {
+        try {
+            if (!req.user) {
+                // return res.status(401).send({ message: "No estás autenticado" });
+            }
+
+            const { queryId } = req.params;
+
+            const deletedQuery = await Query.findByIdAndDelete(queryId);
+
+            if (!deletedQuery) {
+                return res.status(404).send({ message: "La consulta no existe" });
+            }
+
+            res.status(200).send({ message: "Consulta eliminada exitosamente" });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ message: "Ha habido un problema al eliminar la consulta" });
         }
     },
 };

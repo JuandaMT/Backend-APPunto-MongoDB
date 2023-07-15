@@ -4,6 +4,7 @@ const QuerySchema = new mongoose.Schema(
     {
         topic: String,
         question: String,
+        resolved: Boolean,
     },
     {
         timestamps: true,
