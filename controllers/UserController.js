@@ -1,5 +1,7 @@
 const User = require("../models/Usuario");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { jwt_secret } = require("../config/keys.js");
 
 const UserController = {
   async create(req, res) {
@@ -17,32 +19,25 @@ const UserController = {
         .send({ message: "Ha habido un problema al crear el Usuario" });
     }
   },
-  //     async login(req, res) {
-  //     try {
-  //       const user = await User.findOne({
-  //         where: {
-  //           email: req.body.email,
-  //         },
-  //       });
-  //       if (!user) {
-  //         return res
-  //           .status(400)
-  //           .send({ message: "Usuario o contraseña incorrectos" });
-  //       }
-  //       const isMatch = bcrypt.compareSync(req.body.password, user.password);
-  //       if (!isMatch) {
-  //         return res
-  //           .status(400)
-  //           .send({ message: "Usuario o contraseña incorrectos" });
-  //       }
-  //       const token = jwt.sign({ id: user.id }, jwt_secret); //creo el token
-  //       await Token.create({ token, UserId: user.id });//guardo el token en BD previamente importado el modelo Token!!!
-  //       res.send({ token, message: "Te has conectado con éxito", user });
-  //     } catch (error) {
-  //       console.error(error);
-  //       res.status(500).send(error);
-  //     }
-  //   },
+  async login(req, res) {
+    try {
+      const user = await User.findOne({
+        email: req.body.email,
+      });
+
+      const token = jwt.sign({ _id: user._id }, jwt_secret);
+
+      if (user.tokens.length > 4) user.tokens.shift();
+
+      user.tokens.push(token);
+
+      await user.save();
+
+      res.send({ message: "Bienvenid@ " + user.name, token });
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };
 
 module.exports = UserController;
