@@ -1,5 +1,5 @@
 const Query = require("../models/Query");
-// const User = require("../models/Usuario");
+// const User = require("../models/Users");
 // const Answer = require("../models/Answer");
 
 const QueryController = {
@@ -148,7 +148,7 @@ const QueryController = {
                 return res.status(404).send({ message: "La consulta no existe" });
             }
 
-            res.status(200).send({ message: "Estado de la consulta actualizado exitosamente", query });
+            res.status(200).send({ message: "La consulta se marcó como resuelta!", query });
         } catch (error) {
             console.error(error);
             res.status(500).send({ message: "Ha habido un problema al actualizar el estado de la consulta" });
