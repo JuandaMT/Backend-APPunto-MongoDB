@@ -1,16 +1,17 @@
 const Answer = require("../models/Answer");
 
-const AnswerController = {
+const AnswerController = { //crea una respuesta a una duda por id de la duda (ya está hecha la relación)
     async create(req, res) {
         try {
-            const { reply, likes } = req.body;
+            const { reply, likes, _idQuery } = req.body;
 
             // Verificar que no falte rellenar ningún campo
-            if (!reply || !likes) {
+            if (!reply || !likes || !_idQuery) {
                 return res.status(400).send({ message: "Debes completar todos los campos" });
             }
 
-            const answer = await Answer.create(req.body);
+            const answer = await Answer.create({ reply, likes, query: _idQuery });
+
             res.status(201).send({ message: "Respuesta creada exitosamente", answer });
         } catch (error) {
             console.error(error);
