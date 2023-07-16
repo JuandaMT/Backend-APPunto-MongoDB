@@ -7,7 +7,7 @@ dbConnection();
 
 app.use(express.json());
 
-app.use("/usuarios", require("./routes/usuarios"));
+app.use("/users", require("./routes/users"));
 
 app.use("/queries", require("./routes/queries"));
 
