@@ -4,6 +4,10 @@ const AnswerSchema = new mongoose.Schema(
     {
         reply: String,
         likes: String,
+        query: {
+            type: Schema.Types.ObjectId,
+            ref: "Query",
+        },
     },
     {
         timestamps: true,
