@@ -30,7 +30,7 @@ const isTeacher = async (req, res, next) => {
 
 const isStudent = async (req, res, next) => {
     try {
-        const query = await Query.findById(req.params.queryId);
+        const query = await Query.findById(req.body._idQuery);
 
         if (query._idUser.toString() !== req.user._id.toString()) {
             return res.status(403).send({ message: "No puedes editar esta duda, no es tuya" });
