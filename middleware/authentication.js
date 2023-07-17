@@ -27,4 +27,14 @@ const isTeacher = async (req, res, next) => {
     }
     next();
 };
+
+//Buscar el ejemplo de isAuthor!!!
+
+// const isTeacher = async (req, res, next) => {
+//     const teachers = ["teach", "tAssis"];
+//     if (!teachers.includes(req.user.role)) {
+//         return res.status(403).send({ message: "Acceso denegado. No eres profesor" });
+//     }
+//     next();
+// };
 module.exports = { authentication, isTeacher };
