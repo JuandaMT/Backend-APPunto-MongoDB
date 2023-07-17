@@ -10,6 +10,8 @@ const UserSchema = new mongoose.Schema(
 
     age: Number,
 
+    role:String,
+
     tokens: [],
   },
   { timestamps: true }
