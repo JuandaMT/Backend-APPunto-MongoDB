@@ -2,15 +2,31 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
-    name: String,
+    name: {
+      type: String,
+      required: [true, "Por favor rellena tu nombre"],
+    },
 
-    email: String,
+    email: {
+      type: String,
+      required: [true, "Por favor rellena tu email"],
+    },
 
-    password: String,
+    password: {
+      type: String,
+      required: [true, "Por favor rellena tu contraseña"],
+    },
 
-    age: Number,
+    age: {
+      type: Number,
+      required: [true, "Por favor rellena tu edad"],
+    },
+
+    points: Number,
 
     role:String,
+
+    
 
     tokens: [],
   },
