@@ -21,7 +21,7 @@ const authentication = async (req, res, next) => {
 };
 
 const isTeacher = async (req, res, next) => {
-    const teachers = ["teach", "tAssis"];
+    const teachers = ["teacher", "tAssis"];
     if (!teachers.includes(req.user.role)) {
         return res.status(403).send({ message: "Acceso denegado. No eres profesor" });
     }
@@ -30,9 +30,9 @@ const isTeacher = async (req, res, next) => {
 
 const isStudent = async (req, res, next) => {
     try {
-        const query = await Query.findById(req.params._id);
+        const query = await Query.findById(req.params.queryId);
 
-        if (query.userId.toString() !== req.user._id.toString()) {
+        if (query._idUser.toString() !== req.user._id.toString()) {
             return res.status(403).send({ message: "No puedes editar esta duda, no es tuya" });
         }
 
@@ -40,7 +40,7 @@ const isStudent = async (req, res, next) => {
     } catch (error) {
         console.error(error);
 
-        return res.status(500).send({ error, message: "Ha habido un problema al comprobar la autoría del pedido" });
+        return res.status(500).send({ error, message: "Hubo un problema al comprobar la autoría de la duda" });
     }
 };
 module.exports = { authentication, isTeacher, isStudent };
