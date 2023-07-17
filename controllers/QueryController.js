@@ -124,7 +124,7 @@ const QueryController = {
             res.status(200).send({ queries });
         } catch (error) {
             console.error(error);
-            res.status(500).send({ message: "Ha habido un problema al obtener las consultas" });
+            res.status(500).send({ message: "Ha habido un problema al obtener las dudas" });
         }
     },
 

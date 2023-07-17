@@ -1,6 +1,7 @@
 const Answer = require("../models/Answer");
 
-const AnswerController = { //crea una respuesta a una duda por id de la duda (ya está hecha la relación)
+const AnswerController = {
+    //crea una respuesta a una duda por id de la duda (ya está hecha la relación)
     async create(req, res) {
         try {
             const { reply, likes, _idQuery } = req.body;
@@ -18,6 +19,7 @@ const AnswerController = { //crea una respuesta a una duda por id de la duda (ya
             res.status(500).send({ message: "Ha ocurrido un problema al crear la respuesta" });
         }
     },
+
 };
 
 module.exports = AnswerController;
