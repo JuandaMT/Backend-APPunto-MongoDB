@@ -4,6 +4,10 @@ const AnswerController = {
     //crea una respuesta a una duda por id de la duda (ya está hecha la relación)
     async create(req, res) {
         try {
+            if (!req.user) {
+                return res.status(401).send({ message: "No estás autenticado" });
+            }
+
             const { reply, likes, _idQuery } = req.body;
 
             // Verificar que no falte rellenar ningún campo
@@ -19,7 +23,6 @@ const AnswerController = {
             res.status(500).send({ message: "Ha ocurrido un problema al crear la respuesta" });
         }
     },
-
 };
 
 module.exports = AnswerController;
