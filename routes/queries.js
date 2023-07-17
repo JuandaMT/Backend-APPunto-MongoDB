@@ -12,8 +12,9 @@ router.put("/update/:topic", authentication, isTeacher, QueryController.updateQu
 router.put("/resolved/:queryId", authentication, isStudent, QueryController.markQueryAsResolved);
 router.put("/unresolved/:queryId", authentication, isStudent, QueryController.markQueryAsUnresolved);
 
-router.get("/all_U_W/queries", authentication, isTeacher, QueryController.getAllQueriesWithUsersAndAnswers);
+router.get("/everything/queries", authentication, isTeacher, QueryController.getAllQueriesWithUsersAndAnswers);
 router.get("/all/queries", authentication, isTeacher, QueryController.getAllQueriesPagination);
+
 
 router.delete("/queries/:queryId", authentication, QueryController.deleteQuery);
 

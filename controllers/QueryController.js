@@ -1,6 +1,7 @@
 const Query = require("../models/Query");
-const User = require("../models/User");
-const Answer = require("../models/Answer");
+// const User = require("../models/User");
+// const Answer = require("../models/Answer");
+
 
 const QueryController = {
     async createQuery(req, res) {
@@ -16,7 +17,7 @@ const QueryController = {
                 return res.status(400).send({ message: "Tenés que completar todos los campos" });
             }
 
-            const query = await Query.create({...req.body,_idUser:req.user._id});
+            const query = await Query.create({ ...req.body, _idUser: req.user._id });
             res.status(201).send({ message: "Se ha creado tu consulta", query });
         } catch (error) {
             console.error(error);
