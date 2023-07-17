@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Query = require("../models/Query");
 const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../config/keys.js");
 
@@ -13,7 +14,6 @@ const authentication = async (req, res, next) => {
         }
         req.user = user;
         next();
-
     } catch (error) {
         console.error(error);
         return res.status(500).send({ error, message: "Ha habido un problema con el token" });
@@ -21,20 +21,26 @@ const authentication = async (req, res, next) => {
 };
 
 const isTeacher = async (req, res, next) => {
-    const teachers = ["teach", "tAssis"];
+    const teachers = ["teacher", "tAssis"];
     if (!teachers.includes(req.user.role)) {
         return res.status(403).send({ message: "Acceso denegado. No eres profesor" });
     }
     next();
 };
 
-//Buscar el ejemplo de isAuthor!!!
+const isStudent = async (req, res, next) => {
+    try {
+        const query = await Query.findById(req.params.queryId);
 
-// const isTeacher = async (req, res, next) => {
-//     const teachers = ["teach", "tAssis"];
-//     if (!teachers.includes(req.user.role)) {
-//         return res.status(403).send({ message: "Acceso denegado. No eres profesor" });
-//     }
-//     next();
-// };
-module.exports = { authentication, isTeacher };
+        if (query._idUser.toString() !== req.user._id.toString()) {
+            return res.status(403).send({ message: "No puedes editar esta duda, no es tuya" });
+        }
+
+        next();
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).send({ error, message: "Hubo un problema al comprobar la autoría de la duda" });
+    }
+};
+module.exports = { authentication, isTeacher, isStudent };

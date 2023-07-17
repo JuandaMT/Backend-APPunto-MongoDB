@@ -10,6 +10,10 @@ const QuerySchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Answer",
         },
+        _idUser: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
 
     },
     {

@@ -1,19 +1,20 @@
 const express = require("express");
 const QueryController = require("../controllers/QueryController");
-const { authentication, isTeacher } = require("../middleware/authentication");
+const { authentication, isTeacher, isStudent } = require("../middleware/authentication");
 
 const router = express.Router();
 
-router.post("/", QueryController.createQuery);
+router.post("/", authentication, QueryController.createQuery);
 
-router.put("/queries", QueryController.updateQuery);
-router.put("/id/:_id", QueryController.updateQueryById);
-router.put("/update/:topic", QueryController.updateQueryByTopic);
-router.put("/resolved/:queryId", QueryController.markQueryAsResolved);
-router.put("/unresolved/:queryId", QueryController.markQueryAsUnresolved);
+router.put("/queries", authentication, isTeacher, QueryController.updateQuery);
+router.put("/id/:_id", authentication, isTeacher, QueryController.updateQueryById);
+router.put("/update/:topic", authentication, isTeacher, QueryController.updateQueryByTopic);
+router.put("/resolved/:queryId", authentication, isStudent, QueryController.markQueryAsResolved);
+router.put("/unresolved/:queryId", authentication, isStudent, QueryController.markQueryAsUnresolved);
 
-router.get("/all_U_W/queries", QueryController.getAllQueriesWithUsersAndAnswers);
-router.get("/all/queries", QueryController.getAllQueriesPagination);
+router.get("/everything/queries", authentication, isTeacher, QueryController.getAllQueriesWithUsersAndAnswers);
+router.get("/all/queries", authentication, isTeacher, QueryController.getAllQueriesPagination);
+
 
 router.delete("/queries/:queryId", authentication, QueryController.deleteQuery);
 
