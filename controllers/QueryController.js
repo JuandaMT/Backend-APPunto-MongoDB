@@ -1,7 +1,6 @@
 const Query = require("../models/Query");
-// const User = require("../models/User");
-// const Answer = require("../models/Answer");
-
+const User = require("../models/User");
+const Answer = require("../models/Answer");
 
 const QueryController = {
     async createQuery(req, res) {
@@ -105,22 +104,25 @@ const QueryController = {
         }
     },
 
-    async getAllQueriesWithUsersAndAnswers(req, res) {
-        // trae todas las dudas con usuarios y respuestas
+    async getQueriesWithEverything(req, res) {
         try {
             if (!req.user) {
                 return res.status(401).send({ message: "No estás autenticado" });
             }
 
             const queries = await Query.find()
-                .populate("user", "-password")
                 .populate({
-                    path: "answers",
+                    path: "User",
+                    select: "-password",
+                })
+                .populate({
+                    path: "Answers",
                     populate: {
-                        path: "user",
+                        path: "User",
                         select: "-password",
                     },
-                });
+                })
+                .populate("Answers.user", "-password");
 
             res.status(200).send({ queries });
         } catch (error) {
