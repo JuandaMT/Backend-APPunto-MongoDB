@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const UserSchema = new mongoose.Schema(
   {
@@ -21,6 +22,11 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Por favor rellena tu edad"],
     },
+
+    _idQuery:[{
+      type: Schema.Types.ObjectId,
+      ref:"Query",
+    }],
 
     points: Number,
 

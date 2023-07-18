@@ -17,6 +17,7 @@ const QueryController = {
             }
 
             const query = await Query.create({ ...req.body, _idUser: req.user._id });
+            await User.findByIdAndUpdate(req.user._id, { $push: { _idQuery: query._id } })
             res.status(201).send({ message: "Se ha creado tu consulta", query });
         } catch (error) {
             console.error(error);
