@@ -112,17 +112,17 @@ const QueryController = {
 
             const queries = await Query.find()
                 .populate({
-                    path: "User",
+                    path: "_idUser",
                     select: "-password",
                 })
                 .populate({
-                    path: "Answers",
+                    path: "_idAnswer",
                     populate: {
-                        path: "User",
+                        path: "_idUser",
                         select: "-password",
                     },
                 })
-                .populate("Answers.user", "-password");
+                .populate("_idAnswer._idUser", "-password");
 
             res.status(200).send({ queries });
         } catch (error) {
