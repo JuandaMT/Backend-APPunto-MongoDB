@@ -13,7 +13,7 @@ router.put("/resolved/:queryId", authentication, isStudent, QueryController.mark
 router.put("/unresolved/:queryId", authentication, isStudent, QueryController.markQueryAsUnresolved);
 
 router.get("/page/queries", authentication, isTeacher, QueryController.getAllQueriesPagination);
-router.get("/all/all", authentication, isTeacher, QueryController.getQueriesWithEverything);
+router.get("/all/all", authentication, isTeacher, QueryController.getEverything);
 
 router.delete("/queries/:queryId", authentication, QueryController.deleteQuery);
 
