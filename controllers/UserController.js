@@ -18,6 +18,10 @@ const UserController = {
             res.status(500).send({ message: "Ha habido un problema al crear el Usuario" });
         }
     },
+
+
+
+    
     async login(req, res) {
         try {
             const user = await User.findOne({
@@ -61,6 +65,7 @@ const UserController = {
             });
         }
     },
+
     async addPoints(req, res) {
         try {
             const user = await User.findById(req.user._id); //Si lleva req.user necesita una autenticación y pasarle el token
