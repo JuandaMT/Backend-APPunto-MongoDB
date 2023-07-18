@@ -67,7 +67,8 @@ const UserController = {
     try {
       const user = await User.findById(req.user._id); //Si lleva req.user necesita una autenticación y pasarle el token
       req.body.points += 1;
-      res.send(req.body.points, user);
+      res.send(user);
+      console.log(`user es esto ${user}`)
     } catch (error) {
       console.error(error);
     }
