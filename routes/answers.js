@@ -4,7 +4,7 @@ const { authentication, isTeacher, isStudent } = require("../middleware/authenti
 
 const router = express.Router();
 
-router.post("/", authentication, isStudent, AnswerController.create);
+router.post("/", authentication, AnswerController.create);
 
 router.get("/all", authentication, AnswerController.getAllAnswers);
 

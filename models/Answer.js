@@ -12,6 +12,10 @@ const AnswerSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Query",
         },
+        _idUser: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
     },
     {
         timestamps: true,

@@ -17,7 +17,7 @@ const QueryController = {
             }
 
             const query = await Query.create({ ...req.body, _idUser: req.user._id });
-            await User.findByIdAndUpdate(req.user._id, { $push: { _idQuery: query._id } })
+            await User.findByIdAndUpdate(req.user._id, { $push: { _idQuery: query._id } });
             res.status(201).send({ message: "Se ha creado tu consulta", query });
         } catch (error) {
             console.error(error);
@@ -28,10 +28,6 @@ const QueryController = {
     async updateQuery(req, res) {
         // Actualiza la primera que encuentra
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const updatedQuery = await Query.findOneAndUpdate({}, req.body, { new: true });
 
             if (!updatedQuery) {
@@ -47,10 +43,6 @@ const QueryController = {
 
     async updateQueryById(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const { _id } = req.params;
             const updatedQuery = await Query.findByIdAndUpdate(_id, req.body, { new: true });
 
@@ -67,10 +59,6 @@ const QueryController = {
 
     async updateQueryByTopic(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const { topic } = req.params;
             const updatedQuery = await Query.findOneAndUpdate({ topic }, req.body, { new: true });
             console.log(updatedQuery);
@@ -88,10 +76,6 @@ const QueryController = {
 
     async getAllQueriesPagination(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const page = parseInt(req.query.page) || 1;
             const limit = 2;
             const skip = (page - 1) * limit;
@@ -107,37 +91,40 @@ const QueryController = {
 
     async getQueriesWithEverything(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
+            const queries = await Query.find().populate({
+                path: "_idUser",
+                select: "_id name",
+            });
 
-            const queries = await Query.find()
-                .populate({
-                    path: "_idUser",
-                    select: "-password",
-                })
-                .populate({
-                    path: "_idAnswer",
-                    populate: {
-                        path: "_idUser",
-                        select: "-password",
-                    },
-                })
-                .populate("_idAnswer._idUser", "-password");
+            const queryIds = queries.map((query) => query._id);
+            const answers = await Answer.find({ _idQuery: { $in: queryIds } }).populate("_idUser", "_id name");
 
-            res.status(200).send({ queries });
+            const mappedQueries = queries.map((query) => {
+                const createdBy = query._idUser ? query._idUser.name : "Desconocido";
+
+                const answer = answers.find((answer) => answer._idQuery.equals(query._id));
+                const answeredBy = answer ? answer._idUser.name : "Aún no se respondió esta duda";
+                console.log(answer._idUser.name);
+
+                return {
+                    _id: query._id,
+                    topic: query.topic,
+                    question: query.question,
+                    createdBy,
+                    answeredBy,
+                };
+            });
+
+            const msg = "Estas son las dudas y las respuestas con los usuarios que las crearon:";
+
+            res.status(200).send({ msg, queries: mappedQueries });
         } catch (error) {
             console.error(error);
             res.status(500).send({ message: "Ha habido un problema al obtener las dudas" });
         }
     },
-
     async markQueryAsResolved(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const { queryId } = req.params;
             const { resolved } = req.body; //debe ser 0 ó 1
 
@@ -161,10 +148,6 @@ const QueryController = {
 
     async markQueryAsUnresolved(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const { queryId } = req.params;
 
             const query = await Query.findByIdAndUpdate(queryId, { resolved: false }, { new: true });
@@ -182,10 +165,6 @@ const QueryController = {
 
     async deleteQuery(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const { queryId } = req.params;
 
             const deletedQuery = await Query.findByIdAndDelete(queryId);
