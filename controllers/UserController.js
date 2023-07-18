@@ -20,7 +20,6 @@ const UserController = {
         .send({ message: "Ha habido un problema al crear el Usuario" });
     }
   },
-  /* ME ESTÁ DANDO PROBLEMAS, DETECTA _id COMO NULL */
   async login(req, res) {
     try {
       const user = await User.findOne({
@@ -62,6 +61,15 @@ const UserController = {
       res.status(500).send({
         message: "Hubo un problema al intentar desconectar al usuario",
       });
+    }
+  },
+  async addPoints(req, res) {
+    try {
+      const user = await User.findById(req.user._id); //Si lleva req.user necesita una autenticación y pasarle el token
+      req.body.points += 1;
+      res.send(req.body.points, user);
+    } catch (error) {
+      console.error(error);
     }
   },
 };
