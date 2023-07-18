@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../config/keys.js");
+const { Query } = require("mongoose");
 
 const UserController = {
   async create(req, res, next) {
@@ -74,19 +75,7 @@ const UserController = {
       console.error(error);
     }
   },
-  // trae al usuario con todas sus dudas
-  async userAndQueries(req, res) {
-    try {
-      const User = await User.find().populate("query");
 
-      res.status(200).send({ User });
-    } catch (error) {
-      console.error(error);
-      res
-        .status(500)
-        .send({ message: "Ha habido un problema al obtener las dudas" });
-    }
-  },
   async getUserByName(req, res) {
     const UserName = req.params.name;
 
@@ -102,11 +91,24 @@ const UserController = {
       res.status(200).send(user);
     } catch (error) {
       console.error(error);
+      res.status(500).send({
+        message: "Hubo un error al obtener los usuarios por su nombre",
+      });
+    }
+  },
+  // trae al usuario con todas sus dudas
+
+  async userAndQueries(req, res) {
+    try {
+      const user = await User.findById(req.user._id).populate({
+        path: "_idQuery",
+      });
+      res.status(200).send(user);
+    } catch (error) {
+      console.error(error);
       res
         .status(500)
-        .send({
-          message: "Hubo un error al obtener los usuarios por su nombre",
-        });
+        .send({ message: "Ha habido un problema al obtener las dudas" });
     }
   },
 };

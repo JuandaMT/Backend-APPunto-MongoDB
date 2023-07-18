@@ -6,9 +6,9 @@ const { authentication, isTeacher } = require("../middleware/authentication");
 router.post("/", UserController.create);
 router.post("/login", UserController.login);
 router.get("/id/:_id", authentication, UserController.findUser);
-
 router.get("/name/:name", authentication, UserController.getUserByName);
 router.put("/id/:_id", isTeacher, UserController.addPoints);
+router.get("/",authentication, UserController.userAndQueries);
 router.delete("/logout", authentication, UserController.logout);
 
 module.exports = router;
