@@ -23,10 +23,10 @@ const UserSchema = new mongoose.Schema(
       required: [true, "Por favor rellena tu edad"],
     },
 
-    _idQuery:{
+    _idQuery:[{
       type: Schema.Types.ObjectId,
       ref:"Query",
-    },
+    }],
 
     points: Number,
 
