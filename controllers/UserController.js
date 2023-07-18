@@ -77,8 +77,7 @@ const UserController = {
   // trae al usuario con todas sus dudas
   async userAndQueries(req, res) {
     try {
-      const User = await User.find()
-        .populate("query")
+      const User = await User.find().populate("query");
 
       res.status(200).send({ User });
     } catch (error) {
@@ -88,6 +87,27 @@ const UserController = {
         .send({ message: "Ha habido un problema al obtener las dudas" });
     }
   },
-};
+  async getUserByName(req, res) {
+    const UserName = req.params.name;
 
+    try {
+      const user = await User.find({ name: UserName });
+
+      if (user.length === 0) {
+        return res
+          .status(404)
+          .send({ message: "No hay ningún usuario con ese nombre" });
+      }
+
+      res.status(200).send(user);
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send({
+          message: "Hubo un error al obtener los usuarios por su nombre",
+        });
+    }
+  },
+};
 module.exports = UserController;
