@@ -14,7 +14,7 @@ const UserController = {
       res.status(201).send(newUser);
     } catch (error) {
       console.error(error);
-      next(error)
+      next(error);
       res
         .status(500)
         .send({ message: "Ha habido un problema al crear el Usuario" });
@@ -68,10 +68,24 @@ const UserController = {
       const user = await User.findById(req.user._id); //Si lleva req.user necesita una autenticación y pasarle el token
       user.points += 1;
       await user.save();
-      res.send({user, points:user.points});
-      console.log(`user es esto ${user}`)
+      res.send({ user, points: user.points });
+      console.log(`user es esto ${user}`);
     } catch (error) {
       console.error(error);
+    }
+  },
+  // trae al usuario con todas sus dudas
+  async userAndQueries(req, res) {
+    try {
+      const User = await User.find()
+        .populate("query")
+
+      res.status(200).send({ User });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send({ message: "Ha habido un problema al obtener las dudas" });
     }
   },
 };
