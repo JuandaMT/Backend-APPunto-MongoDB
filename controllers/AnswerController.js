@@ -1,7 +1,9 @@
 const Answer = require("../models/Answer");
+const User = require("../models/User");
+const Query = require("../models/Query");
 
 const AnswerController = {
-    //crea una respuesta a una duda por id de la duda (ya está hecha la relación)
+    //creo una respuesta a una duda por id de la duda (ya está hecha la relación)
     async create(req, res) {
         try {
             if (!req.user) {
@@ -10,13 +12,13 @@ const AnswerController = {
 
             const { reply, likes, _idQuery } = req.body;
 
-            // Verificar que no falte rellenar ningún campo
+            // verifico que no falte rellenar ningún campo
             if (!reply || !likes || !_idQuery) {
                 return res.status(400).send({ message: "Debes completar todos los campos" });
             }
 
-            const answer = await Answer.create({ reply, likes, query: _idQuery });
-
+            const answer = await Answer.create({ reply, likes, _idQuery, _idUser: req.user._id });
+            await Query.findByIdAndUpdate(_idQuery, { $push: { _idAnswer: answer._id } }); // pusheo el id de la respuesta al _idAnswer del modelo query
             res.status(201).send({ message: "Respuesta creada exitosamente", answer });
         } catch (error) {
             console.error(error);

@@ -6,10 +6,12 @@ const QuerySchema = new Schema(
         topic: String,
         question: String,
         resolved: Boolean,
-        _idAnswer: {
-            type: Schema.Types.ObjectId,
-            ref: "Answer",
-        },
+        _idAnswer: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Answer",
+            },
+        ],
         _idUser: {
             type: Schema.Types.ObjectId,
             ref: "User",
