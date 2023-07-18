@@ -66,8 +66,9 @@ const UserController = {
   async addPoints(req, res) {
     try {
       const user = await User.findById(req.user._id); //Si lleva req.user necesita una autenticación y pasarle el token
-      req.body.points += 1;
-      res.send(user);
+      user.points += 1;
+      await user.save();
+      res.send({user, points:user.points});
       console.log(`user es esto ${user}`)
     } catch (error) {
       console.error(error);
