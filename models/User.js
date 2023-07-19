@@ -22,17 +22,19 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Por favor rellena tu edad"],
     },
+    
+    confirmed: Boolean,
 
-    _idQuery:[{
-      type: Schema.Types.ObjectId,
-      ref:"Query",
-    }],
+    _idQuery: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Query",
+      },
+    ],
 
     points: Number,
 
-    role:String,
-
-    
+    role: String,
 
     tokens: [],
   },
