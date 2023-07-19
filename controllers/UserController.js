@@ -5,20 +5,76 @@ const { jwt_secret } = require("../config/keys.js");
 const { Query } = require("mongoose");
 
 const UserController = {
-  async create(req, res, next) {
-    try {
-      req.body.role = "student"; //añadimos role user por defecto
-      req.body.points = 0;
-      const password = await bcrypt.hash(req.body.password, 10); //encriptamos contraseña
-      const newUser = await User.create({ ...req.body, password });
+  // async create(req, res, next) {
+  //   try {
+  //     req.body.role = "student"; //añadimos role user por defecto
+  //     req.body.points = 0;
+  //     const password = await bcrypt.hash(req.body.password, 10); //encriptamos contraseña
+  //     const newUser = await User.create({ ...req.body, password });
 
-      res.status(201).send(newUser);
+  //     res.status(201).send(newUser);
+  //   } catch (error) {
+  //     console.error(error);
+  //     next(error);
+  //     res
+  //       .status(500)
+  //       .send({ message: "Ha habido un problema al crear el Usuario" });
+  //   }
+  // },
+
+  async confirm(req, res) {
+    try {
+      const token = req.params.emailToken
+      const payload = jwt.verify(token,jwt_secret)
+      await User.update({ confirmed: true }, {
+        where: {
+          email: payload.email
+        }
+      });
+      res.status(201).send("Usuario confirmado exitosamente!");
     } catch (error) {
       console.error(error);
+    }
+  },
+  
+  async registerUser(req, res, next) {
+   
+  
+    const emailDomain = email.split('@')[1];
+    if (emailDomain !== 'edem.es') {
+      return res.status(400).json({ message: 'Only EDEM email addresses are allowed' });
+    }
+  
+    try {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(409).json({ message: 'El usuario ya existe' });
+      }
+  
+      const hashedPassword = await bcrypt.hashSync(password, 10);
+      const emailToken = jwt.sign({email:req.body.email},jwt_secret,{expiresIn:'1h'})
+      const url = 'http://localhost:3000/users/confirm/'+ emailToken
+      await transporter.sendMail({
+        to: req.body.email,
+        subject: 'Confirm Your Registration',
+        html: `<h3>Welcome, you're one step away from registering</h3>
+        <a href="${url}">Click to confirm your registration</a>`
+      });
+
+      const user = await User.create({
+        name,
+        lastName,
+        email,
+        password: hashedPassword,
+        punctuation: 0,
+        role: 'student'
+      });
+  
+      res.status(201).json({ message: 'User registered successfully', user, token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error registering user' });
       next(error);
-      res
-        .status(500)
-        .send({ message: "Ha habido un problema al crear el Usuario" });
     }
   },
   async login(req, res) {
