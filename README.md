@@ -40,3 +40,11 @@ Usuario_ID: Identificador del alumno que generó la duda.
 Tema: Tema de la pregunta.
 Pregunta: Pregunta planteada por el alumno.
 Resuelta: Indicador booleano que muestra si la duda ha sido resuelta o no.
+
+## Despliegue
+
+Para desplegar el proyecto:
+
+```bash
+  npm run deploy
+```
