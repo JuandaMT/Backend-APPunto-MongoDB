@@ -48,3 +48,11 @@ Para desplegar el proyecto:
 ```bash
   npm run deploy
 ```
+## Puntos por desarrollar
+* Establecer una conexión con el backend
+* Terminar el resto de páginas
+* Implementar una SPA
+## Autores
+
+- [@patrigarcia ]([https://github.com/JuandaMT/Proyecto-Backend](https://github.com/patrigarcia))
+- [@JuandaMT]([https://github.com/JuandaMT/Proyecto-Backend](https://github.com/JuandaMT)https://github.com/JuandaMT)
