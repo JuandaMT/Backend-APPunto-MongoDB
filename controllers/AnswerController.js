@@ -1,5 +1,4 @@
 const Answer = require("../models/Answer");
-const User = require("../models/User");
 const Query = require("../models/Query");
 
 const AnswerController = {

@@ -1,15 +1,14 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { jwt_secret } = require("../config/keys.js");
 const transporter = require("../config/nodemailer");
-const { Query } = require("mongoose");
+require("dotenv").config();
 
 const UserController = {
     async userConfirm(req, res) {
         try {
             const token = req.query.emailToken;
-            const payload = jwt.verify(token, jwt_secret);
+            const payload = jwt.verify(token, process.env.JWT_SECRET);
             await User.findOneAndUpdate(
                 { email: payload.email }, // Agregar una consulta válida para encontrar el usuario por su email.
                 { confirmed: true }, // Agregar el campo de confirmación al objeto de actualización.
@@ -36,7 +35,7 @@ const UserController = {
             }
 
             const hashedPassword = await bcrypt.hashSync(password, 10);
-            const emailToken = jwt.sign({ email: email }, jwt_secret, {
+            const emailToken = jwt.sign({ email: email }, process.env.JWT_SECRET, {
                 expiresIn: "2h",
             });
             const url = `http://localhost:3000/users/confirm`;
@@ -73,15 +72,15 @@ const UserController = {
                 email: req.body.email,
             });
 
-            if (!user) {  
-              return res.status(404).json({ message: "Usuario o contraseña incorrecto!" });
+            if (!user) {
+                return res.status(404).json({ message: "Usuario o contraseña incorrecto!" });
             }
 
             if (user.confirmed === false) {
-              return res.status(409).json({ message: "Usuario no confirmado!" });
+                return res.status(409).json({ message: "Usuario no confirmado!" });
             }
 
-            const token = jwt.sign({ _id: user._id }, jwt_secret);
+            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
             if (user.tokens.length > 4) user.tokens.shift();
             user.tokens.push(token);
 
