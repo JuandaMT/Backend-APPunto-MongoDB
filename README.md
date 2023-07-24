@@ -14,6 +14,8 @@ Este proyecto de backend tiene como objetivo desarrollar una API REST utilizando
 ## Objetivos del proyecto
 Appunto es una API REST educativa, con un backend desarrollado en JavaScript, utilizando Express, Mongosh y Mongoose para una integración sólida con una base de datos MongoDB. Bcrypt y JSON Web Token para garantizar la seguridad de los datos de los usuarios. Además, utiliza Nodemailer para confirmar correos electrónicos y mejorar la seguridad.
 
+El concepto del proyecto es el de desarrollar una herramienta de gestión de puntos para los alumnos de una clase. Los puntos serán otorgados por el profesorado en función del rendimiento del alumnado. La acumulación de puntos representa el desarrollo del alumno y permite llevar una gestión de los alumnos en función de su rendimiento académico. Con la obtención de puntos, los alumnos se van posicionando entre la clase para obtener una serie de ventajas.
+
 ## Colecciones
 
 ### Colección "Usuarios" 👤
