@@ -54,12 +54,8 @@ Resuelta: Indicador booleano que muestra si la duda ha sido resuelta o no.
 
 ## Despliegue 🚀
 
+### Próximamente 
 
-Para desplegar el proyecto:
-
-```bash
-  npm run deploy
-```
 ## Puntos por desarrollar
 * Establecer una conexión con el backend
 * Terminar el resto de páginas
