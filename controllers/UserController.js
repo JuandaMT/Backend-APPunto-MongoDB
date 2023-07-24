@@ -2,18 +2,13 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const transporter = require("../config/nodemailer");
-require("dotenv").config();
 
 const UserController = {
     async userConfirm(req, res) {
         try {
             const token = req.query.emailToken;
             const payload = jwt.verify(token, process.env.JWT_SECRET);
-            await User.findOneAndUpdate(
-                { email: payload.email }, // Agregar una consulta válida para encontrar el usuario por su email.
-                { confirmed: true }, // Agregar el campo de confirmación al objeto de actualización.
-                { new: true } // La opción { new: true } devuelve el documento actualizado.
-            );
+            await User.findOneAndUpdate({ email: payload.email }, { confirmed: true }, { new: true });
             res.status(200).send("Su correo ha sido validado, ya puede hacer login!");
         } catch (error) {
             console.error(error);
@@ -40,7 +35,6 @@ const UserController = {
             });
             const url = `http://localhost:3000/users/confirm`;
 
-            // Guardar el token en el campo tokens del documento del usuario creado
             const user = await User.create({
                 name,
                 email,
@@ -48,7 +42,7 @@ const UserController = {
                 age,
                 points: 0,
                 role: "student",
-                tokens: [{ token: emailToken.toString() }], // Guardar el token generado en el campo tokens
+                tokens: [{ token: emailToken.toString() }],
             });
 
             await transporter.sendMail({
@@ -91,12 +85,10 @@ const UserController = {
             console.error(error);
         }
     },
-    /* if (!req.user) {
-    return res.status(401).send({ message: "No estás autenticado" });
-  } */
+
     async findUser(req, res) {
         try {
-            const user = await User.findById(req.user._id); //Si lleva req.user necesita una autenticación y pasarle el token
+            const user = await User.findById(req.user._id);
             res.send(user);
         } catch (error) {
             console.error(error);
@@ -119,7 +111,7 @@ const UserController = {
     },
     async addPoints(req, res) {
         try {
-            const user = await User.findById(req.user._id); //Si lleva req.user necesita una autenticación y pasarle el token
+            const user = await User.findById(req.user._id);
             user.points += 1;
             await user.save();
             res.send({ user, points: user.points });
@@ -147,7 +139,6 @@ const UserController = {
             });
         }
     },
-    // trae al usuario con todas sus dudas
 
     async userAndQueries(req, res) {
         try {
