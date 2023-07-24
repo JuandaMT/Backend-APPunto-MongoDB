@@ -20,9 +20,8 @@ El concepto del proyecto es el de desarrollar una herramienta de gestión de pun
 
 ### Colección "Usuarios" 👤
 
-Esta colección almacenará la información de todos los usuarios, incluyendo alumnos y profesores. Cada usuario tendrá los siguientes campos:
-ID: Identificador único del usuario.
-
+Esta colección almacenará la información de todos los usuarios, incluyendo alumnos y profesores. Cada usuario tendrá los siguientes campos:<br>
+ID: Identificador único del usuario.<br>
 Nombre: Nombre del usuario. <br>
 Email: Email del usuario.<br>
 Contraseña: Contraseña del usuario.<br>
@@ -32,14 +31,14 @@ Puntos: Puntos acumulados por el usuario.<br>
 
 ### Colección "Respuestas" 📥
 
-Esta colección registrará las diferentes respuestas. Cada grupo tendrá los siguientes campos:
+Esta colección registrará las diferentes respuestas. Cada grupo tendrá los siguientes campos:<br>
 ID: Identificador único del grupo.<br>
 ID Alumno: ID del alumno que escribe la respuesta.<br>
 Respuesta: Respuesta de la pregunta.
 
 ### Colección "Dudas" ❓
 
-Esta colección registrará las dudas planteadas por los alumnos. Cada duda tendrá los siguientes campos:
+Esta colección registrará las dudas planteadas por los alumnos. Cada duda tendrá los siguientes campos:<br>
 ID: Identificador único de la duda.<br>
 ID Preguntas: Identificador único de las preguntas.<br>
 ID Respuestas: Identificador único de las respuestas.<br>
