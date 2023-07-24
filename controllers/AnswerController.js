@@ -2,7 +2,6 @@ const Answer = require("../models/Answer");
 const Query = require("../models/Query");
 
 const AnswerController = {
-    //creo una respuesta a una duda por id de la duda (ya está hecha la relación)
     async create(req, res) {
         try {
             if (!req.user) {
@@ -11,13 +10,12 @@ const AnswerController = {
 
             const { reply, likes, _idQuery } = req.body;
 
-            // verifico que no falte rellenar ningún campo
             if (!reply || !likes || !_idQuery) {
                 return res.status(400).send({ message: "Debes completar todos los campos" });
             }
 
             const answer = await Answer.create({ reply, likes, _idQuery, _idUser: req.user._id });
-            await Query.findByIdAndUpdate(_idQuery, { $push: { _idAnswer: answer._id } }); // pusheo el id de la respuesta al _idAnswer del modelo query
+            await Query.findByIdAndUpdate(_idQuery, { $push: { _idAnswer: answer._id } });
             res.status(201).send({ message: "Respuesta creada exitosamente", answer });
         } catch (error) {
             console.error(error);
@@ -41,7 +39,6 @@ const AnswerController = {
     },
 
     async updateAnswer(req, res) {
-        // Actualiza la primera que encuentra
         try {
             if (!req.user) {
                 return res.status(401).send({ message: "No estás autenticado" });
