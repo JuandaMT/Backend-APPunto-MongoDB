@@ -22,30 +22,30 @@ El concepto del proyecto es el de desarrollar una herramienta de gestión de pun
 
 Esta colección almacenará la información de todos los usuarios, incluyendo alumnos y profesores. Cada usuario tendrá los siguientes campos:
 ID: Identificador único del usuario.
-Nombre: Nombre del usuario.
-Email: Email del usuario.
-Contraseña: Contraseña del usuario.
-Edad: Edad del usuario.
-Rol: Rol del usuario (alumno o profesor).
-Puntos: Puntos acumulados por el usuario.
-... (Otros detalles relevantes)
+
+Nombre: Nombre del usuario. <br>
+Email: Email del usuario.<br>
+Contraseña: Contraseña del usuario.<br>
+Edad: Edad del usuario.<br>
+Rol: Rol del usuario (alumno o profesor).<br>
+Puntos: Puntos acumulados por el usuario.<br>
 
 ### Colección "Respuestas" 📥
 
 Esta colección registrará las diferentes respuestas. Cada grupo tendrá los siguientes campos:
-ID: Identificador único del grupo.
-ID Alumno: ID del alumno que escribe la respuesta.
+ID: Identificador único del grupo.<br>
+ID Alumno: ID del alumno que escribe la respuesta.<br>
 Respuesta: Respuesta de la pregunta.
 
 ### Colección "Dudas" ❓
 
 Esta colección registrará las dudas planteadas por los alumnos. Cada duda tendrá los siguientes campos:
-ID: Identificador único de la duda.
-ID Preguntas: Identificador único de las preguntas.
-ID Respuestas: Identificador único de las respuestas.
-Usuario_ID: Identificador del alumno que generó la duda.
-Tema: Tema de la pregunta.
-Pregunta: Pregunta planteada por el alumno.
+ID: Identificador único de la duda.<br>
+ID Preguntas: Identificador único de las preguntas.<br>
+ID Respuestas: Identificador único de las respuestas.<br>
+Usuario_ID: Identificador del alumno que generó la duda.<br>
+Tema: Tema de la pregunta.<br>
+Pregunta: Pregunta planteada por el alumno.<br>
 Resuelta: Indicador booleano que muestra si la duda ha sido resuelta o no.
 
 ## Documentación
