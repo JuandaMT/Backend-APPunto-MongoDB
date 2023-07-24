@@ -10,7 +10,6 @@ const QueryController = {
 
             const { topic, question } = req.body;
 
-            // verifico que no falte rellenar ningún campo
             if (!topic || !question) {
                 return res.status(400).send({ message: "Tenés que completar todos los campos" });
             }
@@ -26,7 +25,6 @@ const QueryController = {
     },
 
     async updateQuery(req, res) {
-        // Actualiza la primera que encuentra
         try {
             if (!req.user) {
                 return res.status(401).send({ message: "No estás autenticado" });
@@ -136,9 +134,8 @@ const QueryController = {
             }
 
             const { queryId } = req.params;
-            const { resolved } = req.body; //debe ser 0 ó 1
+            const { resolved } = req.body;
 
-            // verifico que se añadió el campo resolved en el body
             if (resolved === undefined) {
                 return res.status(400).send({ message: "Falta proporcionar el campo 'resolved'" });
             }
