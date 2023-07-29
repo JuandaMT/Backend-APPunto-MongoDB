@@ -4,10 +4,6 @@ const Query = require("../models/Query");
 const AnswerController = {
     async create(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const { reply, likes, _idQuery } = req.body;
 
             if (!reply || !likes || !_idQuery) {
@@ -25,10 +21,6 @@ const AnswerController = {
 
     async getAllAnswers(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const answers = await Answer.find();
 
             res.status(200).send({ message: "Estás viendo todas las respuestas", answers });
@@ -40,10 +32,6 @@ const AnswerController = {
 
     async updateAnswer(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const updatedAnswer = await Answer.findOneAndUpdate({}, req.body, { new: true });
 
             if (!updatedAnswer) {

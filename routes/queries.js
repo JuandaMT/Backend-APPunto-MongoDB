@@ -4,16 +4,16 @@ const { authentication, isTeacher, isStudent } = require("../middleware/authenti
 
 const router = express.Router();
 
-router.post("/", authentication, QueryController.createQuery);
+router.post("/", QueryController.createQuery);
 
-router.put("/queries", authentication, isTeacher, QueryController.updateQuery);
+router.put("/queries", authentication, QueryController.updateQuery);
 router.put("/id/:_id", authentication, isTeacher, QueryController.updateQueryById);
 router.put("/update/:topic", authentication, isTeacher, QueryController.updateQueryByTopic);
 router.put("/resolved/:queryId", authentication, isStudent, QueryController.markQueryAsResolved);
 router.put("/unresolved/:queryId", authentication, isStudent, QueryController.markQueryAsUnresolved);
 
 router.get("/page/queries", authentication, isTeacher, QueryController.getAllQueriesPagination);
-router.get("/all/all", authentication, isTeacher, QueryController.getEverything);
+router.get("/all/all", QueryController.getEverything);
 
 router.delete("/queries/:queryId", authentication, QueryController.deleteQuery);
 

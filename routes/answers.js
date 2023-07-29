@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/", authentication, AnswerController.create);
 
-router.get("/all", authentication, AnswerController.getAllAnswers);
+router.get("/all", AnswerController.getAllAnswers);
 
 router.put("/update", authentication, AnswerController.updateAnswer);
 

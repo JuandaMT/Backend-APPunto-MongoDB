@@ -4,16 +4,11 @@ const User = require("../models/User");
 const QueryController = {
     async createQuery(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "No estás autenticado" });
-            }
-
             const { topic, question } = req.body;
 
             if (!topic || !question) {
                 return res.status(400).send({ message: "Tenés que completar todos los campos" });
             }
-
             const query = await Query.create({ ...req.body, _idUser: req.user._id });
             await User.findByIdAndUpdate(req.user._id, { $push: { _idQuery: query._id } });
 
@@ -71,7 +66,6 @@ const QueryController = {
 
             const { topic } = req.params;
             const updatedQuery = await Query.findOneAndUpdate({ topic }, req.body, { new: true });
-            console.log(updatedQuery);
 
             if (!updatedQuery) {
                 return res.status(404).send({ message: "No se encontró ninguna consulta con ese tema" });
